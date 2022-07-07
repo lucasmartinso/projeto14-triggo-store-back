@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
-import { signUpSchema } from "./validationsController.js";
+import { signUpSchema } from "../Schema/validate.js";
 import { db } from "../database/mongo.js";
 
 export async function signUp(req, res) {
