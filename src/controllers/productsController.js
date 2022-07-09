@@ -4,7 +4,7 @@ dotenv.config();
 
 export async function getProducts(req, res) {
   try {
-    return res.send("Oi");
+    return res.send();
   } catch (err) {
     return res.sendStatus(500);
   }
