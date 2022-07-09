@@ -13,7 +13,7 @@ export async function signUp(req, res) {
       .insertOne({ name, email, password: passwordHash });
     await db.collection("records").insertOne({
       userId: userId,
-      records: [],
+      historic: [],
     });
     return res.sendStatus(201);
   } catch (err) {
@@ -29,27 +29,27 @@ export async function signUp(req, res) {
 }
 
 export async function signIn(req, res) {
-  const {email, password} = req.body; 
-  const token = uuidv4(); 
-  
-  try { 
-    const verifyUser = await db.collection("users").findOne({email});  
-    const passwordCompare = bcrypt.compareSync(password, verifyUser.password);  
-    if(!verifyUser || !passwordCompare) { 
+  const { email, password } = req.body;
+  const token = uuidv4();
+
+  try {
+    const verifyUser = await db.collection("users").findOne({ email });
+    const passwordCompare = bcrypt.compareSync(password, verifyUser.password);
+    if (!verifyUser || !passwordCompare) {
       res.sendStatus(404);
       return;
-    } 
+    }
     await db.collection("sessions").insertOne({
-      id: verifyUser._id, 
-      token
-    }); 
+      id: verifyUser._id,
+      token,
+    });
   } catch (error) {
     console.log(error.details);
-    res.sendStatus(500); 
+    res.sendStatus(500);
     return;
   }
 
-  return res.send({token}).status(200);
+  return res.send({ token }).status(200);
 }
 
 export async function logOut(req, res) {

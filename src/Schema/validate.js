@@ -1,5 +1,4 @@
 import Joi from "joi";
-import bcrypt from "bcrypt";
 import { db } from "../database/mongo.js";
 
 export async function signUpSchema(user) {
@@ -13,5 +12,3 @@ export async function signUpSchema(user) {
     email: Joi.string().email().invalid(userEmail).required(),
   }).validateAsync(user);
 }
-
-export async function signInSchema(user) {}
