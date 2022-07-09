@@ -4,6 +4,7 @@ async function validateUser(req, res, next) {
   const { authorization } = req.headers;
   const tokenAuth = authorization?.replace("Bearer ", "");
   const session = await db.collection("sessions").findOne({ token: tokenAuth });
+  console.log(session);
   if (!session || !tokenAuth) {
     return res.sendStatus(401);
   }
