@@ -21,6 +21,33 @@ export async function getProducts(req, res) {
 
 export async function getBag(req, res) {
   const { session } = res.locals;
+  const findId = await db.collection("sessions").findOne({token: session.token});
+  const findUser = await db.collection("users").findOne({_id: findId.id});
+  console.log(findUser); 
+  if(!findId || !findUser) { 
+    return res.sendStatus(404);
+  }
+  res.send("produtos").status(200);
+}
+
+export async function updateItemBag(req,res) { 
+  const { session } = res.locals;
+  const findId = await db.collection("sessions").findOne({token: session.token});
+  const findUser = await db.collection("users").findOne({_id: findId.id});
+  return res.sendStatus(200);
+}
+
+export async function deleteItemBag(req,res) { 
+  const { session } = res.locals;
+  const productInfo = req.body;
+  const findId = await db.collection("sessions").findOne({token: session.token});
+  const findUser = await db.collection("users").findOne({_id: findId.id});
+  return res.sendStatus(200);
+} 
+
+export async function postAdrress(req,res) { 
+  const { session } = res.locals;
+  const { adrress } = req.body;
   const findId = await db
     .collection("sessions")
     .findOne({ token: session.token });
