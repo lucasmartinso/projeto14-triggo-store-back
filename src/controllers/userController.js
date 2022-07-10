@@ -11,8 +11,9 @@ export async function signUp(req, res) {
     const { insertedId: userId } = await db
       .collection("users")
       .insertOne({ name, email, password: passwordHash });
-    await db.collection("records").insertOne({
+    await db.collection("historics").insertOne({
       userId: userId,
+      adress: "",
       historic: [],
     });
     return res.sendStatus(201);
