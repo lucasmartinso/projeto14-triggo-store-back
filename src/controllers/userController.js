@@ -13,7 +13,7 @@ export async function signUp(req, res) {
       .insertOne({ name, email, password: passwordHash });
     await db.collection("historics").insertOne({
       userId: userId,
-      adress: "",
+      address: "",
       historic: [],
     });
     return res.sendStatus(201);
