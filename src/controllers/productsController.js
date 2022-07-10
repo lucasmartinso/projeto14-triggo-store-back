@@ -2,15 +2,24 @@ import { db } from "../database/mongo.js";
 import dotenv from "dotenv";
 dotenv.config();
 
+export async function postProducts(req, res) {
+  try {
+    await db.collection("products").insertOne(req.body);
+    return res.sendStatus(201);
+  } catch (err) {
+    return res.sendStatus(500);
+  }
+}
 export async function getProducts(req, res) {
   try {
-    return res.send("Oi");
+    const products = await db.collection("products").find({}).toArray();
+    return res.send(products);
   } catch (err) {
     return res.sendStatus(500);
   }
 }
 
-export async function getBag(req,res) { 
+export async function getBag(req, res) {
   const { session } = res.locals;
   const findId = await db.collection("sessions").findOne({token: session.token});
   const findUser = await db.collection("users").findOne({_id: findId.id});
@@ -39,7 +48,10 @@ export async function deleteItemBag(req,res) {
 export async function postAdrress(req,res) { 
   const { session } = res.locals;
   const { adrress } = req.body;
-  const findId = await db.collection("sessions").findOne({token: session.token});
-  const findUser = await db.collection("users").findOne({_id: findId.id});
-  return res.sendStatus(200);
+  const findId = await db
+    .collection("sessions")
+    .findOne({ token: session.token });
+  const findUser = await db.collection("users").findOne({ _id: findId.id });
+  console.log(findUser);
+  res.sendStatus(400);
 }

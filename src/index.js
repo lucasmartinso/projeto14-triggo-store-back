@@ -12,6 +12,7 @@ dotenv.config();
 
 app.use(userRouter,productsRouter);
 
+
 app.listen(process.env.PORT, () => {
   console.log(chalk.blue.bold(`\nRodando na porta ${process.env.PORT}`));
 });
