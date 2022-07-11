@@ -92,13 +92,20 @@ export async function deleteItemBag(req, res) {
 
 export async function postAdrress(req, res) {
   const { session } = res.locals;
-  const { address } = req.body;
+  const { info } = req.body;
   const findId = await db
     .collection("sessions")
     .findOne({ token: session.token });
   const findUser = await db.collection("users").findOne({ _id: findId.id });
-  if(!address || !findUser) { 
+  if(!findUser) { 
     return res.sendStatus(404);
+  }
+  try {
+    await db.collection("historics").updateOne({
+      userId: session.userId, 
+    }, {$set: { historic: [...info.productList], address: info.address}  });
+  } catch (error) {
+    console.log(error);
   }
   res.sendStatus(200);
 }
