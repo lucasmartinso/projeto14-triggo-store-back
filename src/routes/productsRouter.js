@@ -9,7 +9,7 @@ import {
   sendProductsBag,
 } from "../controllers/productsController.js";
 import { Router } from "express";
-import validateUserMiddleware from "../middlewares/validateUserMiddleware.js"; 
+import validateUserMiddleware from "../middlewares/validateUserMiddleware.js";
 import validateSchemaAdrress from "../middlewares/validateSchemaAdrress.js";
 
 const router = Router();
@@ -23,6 +23,11 @@ router.post("/bag", validateUserMiddleware, sendProductsBag);
 router.get("/buy", validateUserMiddleware, getBag);
 router.put("/buy", validateUserMiddleware, updateItemBag);
 router.delete("/buy", validateUserMiddleware, deleteItemBag);
-router.post("/finish", validateUserMiddleware, validateSchemaAdrress, postAdrress);
+router.post(
+  "/finish",
+  validateUserMiddleware,
+  validateSchemaAdrress,
+  postAdrress
+);
 
 export default router;
