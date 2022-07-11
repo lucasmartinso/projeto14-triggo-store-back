@@ -1,4 +1,4 @@
-import adrressSchema from "../Schema/addressSchema"; 
+import adrressSchema from "../Schema/adrressSchema.js"; 
 
 export default function validateSchemaAdrress(req,res,next) { 
     const validation = adrressSchema.validate(req.body); 
