@@ -41,7 +41,8 @@ export async function getBag(req, res) {
   if (!findId || !findUser) {
     return res.sendStatus(404);
   }
-  res.send("produtos").status(200);
+  const SelectedProducts = await db.collection("products").find().toArray();
+  res.send(SelectedProducts).status(200);
 }
 
 export async function updateItemBag(req, res) {
