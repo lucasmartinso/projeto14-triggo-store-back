@@ -48,11 +48,7 @@ export async function sendProductsBag(req,res) {
     await db.collection("bag").insertOne({ 
       token: session.token,
       userId: findId.id,
-      amount: SelectedProducts.amount,
-      id: SelectedProducts.id,
-      image: SelectedProducts.image, 
-      name: SelectedProducts.name,
-      price: SelectedProducts.price
+      SelectedProducts
     });
   } catch(error) { 
     return res.sendStatus(500);
