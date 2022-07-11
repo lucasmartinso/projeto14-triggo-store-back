@@ -9,7 +9,7 @@ import {
   sendProductsBag,
 } from "../controllers/productsController.js";
 import { Router } from "express";
-import validateUserMiddleware from "../middlewares/validateUserMiddleware.js"; 
+import validateUserMiddleware from "../middlewares/validateUserMiddleware.js";
 
 const router = Router();
 
