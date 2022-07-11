@@ -44,7 +44,7 @@ export async function sendProductsBag(req,res) {
   } 
 
   try{ 
-    await db.collection("bag").insertOne(SelectedProducts);
+    await db.collection("bag").insertOne({ SelectedProducts });
   } catch(error) { 
     return res.sendStatus(500);
   } 
