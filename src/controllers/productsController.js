@@ -33,6 +33,7 @@ export async function deleteProducts(req, res) {
 
 export async function sendProductsBag(req,res) {  
   const SelectedProducts = req.body;
+  console.log(SelectedProducts);
   const { session } = res.locals;
   const findId = await db
     .collection("sessions")
@@ -44,7 +45,15 @@ export async function sendProductsBag(req,res) {
   } 
 
   try{ 
-    await db.collection("bag").insertOne({ SelectedProducts });
+    await db.collection("bag").insertOne({ 
+      token: session.token,
+      userId: findId.id,
+      amount: SelectedProducts.amount,
+      id: SelectedProducts.id,
+      image: SelectedProducts.image, 
+      name: SelectedProducts.name,
+      price: SelectedProducts.price
+    });
   } catch(error) { 
     return res.sendStatus(500);
   } 
@@ -61,7 +70,7 @@ export async function getBag(req, res) {
   if (!findId || !findUser) {
     return res.sendStatus(404);
   }
-  const SelectedProducts = await db.collection("bag").find().toArray();
+  const SelectedProducts = await db.collection("bag").find({userId: findId.id}).toArray();
   res.send(SelectedProducts).status(200);
 }
 
