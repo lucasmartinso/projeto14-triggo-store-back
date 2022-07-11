@@ -61,7 +61,7 @@ export async function getBag(req, res) {
   if (!findId || !findUser) {
     return res.sendStatus(404);
   }
-  const SelectedProducts = await db.collection("products").find().toArray();
+  const SelectedProducts = await db.collection("bag").find().toArray();
   res.send(SelectedProducts).status(200);
 }
 
