@@ -97,6 +97,8 @@ export async function postAdrress(req, res) {
     .collection("sessions")
     .findOne({ token: session.token });
   const findUser = await db.collection("users").findOne({ _id: findId.id });
-  console.log(findUser);
-  res.sendStatus(400);
+  if(!adrress || !findUser) { 
+    return res.sendStatus(404);
+  }
+  res.sendStatus(200);
 }
