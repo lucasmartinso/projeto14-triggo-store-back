@@ -68,12 +68,10 @@ export async function getBag(req, res) {
   if (!findId || !findUser) {
     return res.sendStatus(404);
   }
-  console.log(findId.id);
-  const SelectedProducts = await db
-    .collection("bag")
-    .find({ token: session.token })
-    .toArray();
-  res.send(SelectedProducts).status(200);
+  const userHistoric = await db
+    .collection("historics")
+    .findOne({ userId: session.userId });
+  res.send(userHistoric).status(200);
 }
 
 export async function updateItemBag(req, res) {
@@ -118,13 +116,17 @@ export async function postAdrress(req, res) {
       },
       {
         $set: {
-          historic: [...userHistoric, [hoje, ...info.productLis]],
+          historic: [...userHistoric.historic, [hoje, ...info.productList]],
           address: info.address,
         },
       }
     );
+    const histo = await db
+      .collection("historics")
+      .find({ userId: session.userId })
+      .toArray();
+    return res.send(histo).status(200);
   } catch (error) {
-    console.log(error);
+    return res.sendStatus(500);
   }
-  res.sendStatus(200);
 }
