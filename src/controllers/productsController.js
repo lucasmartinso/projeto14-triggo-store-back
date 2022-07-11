@@ -92,12 +92,12 @@ export async function deleteItemBag(req, res) {
 
 export async function postAdrress(req, res) {
   const { session } = res.locals;
-  const { adrress } = req.body;
+  const { address } = req.body;
   const findId = await db
     .collection("sessions")
     .findOne({ token: session.token });
   const findUser = await db.collection("users").findOne({ _id: findId.id });
-  if(!adrress || !findUser) { 
+  if(!address || !findUser) { 
     return res.sendStatus(404);
   }
   res.sendStatus(200);
