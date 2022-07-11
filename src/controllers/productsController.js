@@ -29,6 +29,26 @@ export async function deleteProducts(req, res) {
     console.log(err);
     return res.sendStatus(500);
   }
+}  
+
+export async function sendProductsBag(req,res) {  
+  const SelectedProducts = req.body;
+  const { session } = res.locals;
+  const findId = await db
+    .collection("sessions")
+    .findOne({ token: session.token });
+  const findUser = await db.collection("users").findOne({ _id: findId.id });
+  console.log(findUser);
+  if (!findId || !findUser) {
+    return res.sendStatus(404);
+  } 
+
+  try{ 
+    await db.collection("bag").insertOne(SelectedProducts);
+  } catch(error) { 
+    return res.sendStatus(500);
+  } 
+  res.sendStatus(201);
 }
 
 export async function getBag(req, res) {
