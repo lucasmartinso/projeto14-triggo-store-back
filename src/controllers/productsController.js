@@ -70,7 +70,8 @@ export async function getBag(req, res) {
   if (!findId || !findUser) {
     return res.sendStatus(404);
   }
-  const SelectedProducts = await db.collection("bag").find({userId: findId.id}).toArray();
+  console.log(findId.id);
+  const SelectedProducts = await db.collection("bag").find( {token: session.token} ).toArray();
   res.send(SelectedProducts).status(200);
 }
 
