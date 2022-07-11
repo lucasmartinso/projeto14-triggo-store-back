@@ -1,4 +1,5 @@
 import { db } from "../database/mongo.js";
+import ObjectId from "bson-objectid";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -21,10 +22,11 @@ export async function getProducts(req, res) {
 
 export async function deleteProducts(req, res) {
   try {
-    const { id } = req.params;
-    await db.deleteOne({ _id: id });
-    return res.status(200).send(products);
+    const { id } = req.query;
+    await db.collection("products").deleteOne({ _id: ObjectId(id) });
+    return res.sendStatus(200);
   } catch (err) {
+    console.log(err);
     return res.sendStatus(500);
   }
 }
