@@ -35,13 +35,11 @@ export async function deleteProducts(req, res) {
 
 export async function sendProductsBag(req, res) {
   const SelectedProducts = req.body;
-  console.log(SelectedProducts);
   const { session } = res.locals;
   const findId = await db
     .collection("sessions")
     .findOne({ token: session.token });
   const findUser = await db.collection("users").findOne({ _id: findId.id });
-  console.log(findUser);
   if (!findId || !findUser) {
     return res.sendStatus(404);
   }
@@ -64,38 +62,19 @@ export async function getBag(req, res) {
     .collection("sessions")
     .findOne({ token: session.token });
   const findUser = await db.collection("users").findOne({ _id: findId.id });
-  console.log(findUser);
   if (!findId || !findUser) {
     return res.sendStatus(404);
   }
   const userHistoric = await db
     .collection("historics")
-    .findOne({ userId: session.userId });
+    .findOne({ userId: ObjectId(session.userId) });
   res.send(userHistoric).status(200);
-}
-
-export async function updateItemBag(req, res) {
-  const { session } = res.locals;
-  const findId = await db
-    .collection("sessions")
-    .findOne({ token: session.token });
-  const findUser = await db.collection("users").findOne({ _id: findId.id });
-  return res.sendStatus(200);
-}
-
-export async function deleteItemBag(req, res) {
-  const { session } = res.locals;
-  const productInfo = req.body;
-  const findId = await db
-    .collection("sessions")
-    .findOne({ token: session.token });
-  const findUser = await db.collection("users").findOne({ _id: findId.id });
-  return res.sendStatus(200);
 }
 
 export async function postAdrress(req, res) {
   const { session } = res.locals;
-  const { info } = req.body;
+  const { address, productList } = req.body;
+  console.log(address);
   const findId = await db
     .collection("sessions")
     .findOne({ token: session.token });
@@ -108,25 +87,27 @@ export async function postAdrress(req, res) {
     let hoje = now.format("ddd, DD MMMM YY");
     const userHistoric = await db
       .collection("historics")
-      .find({ userId: session.userId })
+      .find({ userId: ObjectId(session.id) })
       .toArray();
     await db.collection("historics").updateOne(
       {
-        userId: session.userId,
+        userId: ObjectId(session.id),
       },
       {
         $set: {
-          historic: [...userHistoric.historic, [hoje, ...info.productList]],
-          address: info.address,
+          historic: [...userHistoric[0].historic, [hoje, ...productList]],
+          address: address,
         },
       }
-    );
+    ); 
+    console.log(userHistoric[0].historic);
     const histo = await db
       .collection("historics")
       .find({ userId: session.userId })
       .toArray();
     return res.send(histo).status(200);
   } catch (error) {
+    console.log(error);
     return res.sendStatus(500);
   }
 }
