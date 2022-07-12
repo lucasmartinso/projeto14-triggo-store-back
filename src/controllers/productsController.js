@@ -67,8 +67,9 @@ export async function getBag(req, res) {
   }
   const userHistoric = await db
     .collection("historics")
-    .find({ userId: ObjectId(session.id) }).toArray();
-    console.log(userHistoric);
+    .find({ userId: ObjectId(session.id) })
+    .toArray();
+  console.log(userHistoric);
   res.send(userHistoric).status(200);
 }
 
@@ -96,11 +97,11 @@ export async function postAdrress(req, res) {
       },
       {
         $set: {
-          historic: [...userHistoric[0].historic, [hoje, ...productList]],
+          historic: [...userHistoric[0].historic, [hoje, [...productList]]],
           address: address,
         },
       }
-    ); 
+    );
     console.log(userHistoric[0].historic);
     const histo = await db
       .collection("historics")
