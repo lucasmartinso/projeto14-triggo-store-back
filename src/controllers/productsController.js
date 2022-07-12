@@ -67,7 +67,8 @@ export async function getBag(req, res) {
   }
   const userHistoric = await db
     .collection("historics")
-    .findOne({ userId: ObjectId(session.userId) });
+    .findOne({ userId: ObjectId(session.id) });
+    console.log(userHistoric);
   res.send(userHistoric).status(200);
 }
 
